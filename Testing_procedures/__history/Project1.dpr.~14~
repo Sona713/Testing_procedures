@@ -1,0 +1,59 @@
+program Project1;
+
+{$APPTYPE CONSOLE}
+
+{$R *.res}
+
+uses
+  System.SysUtils,
+  System.Diagnostics;
+
+type
+  TMyType = TArray<Integer>;  //Integer/String/TObject/TArray<Integer>
+
+procedure ConstTest(const x: TMyType); begin end;
+procedure VarTest(var x: TMyType); begin end;
+procedure OutTest(out x: TMyType); begin end;
+procedure CopyTest(x: TMyType); begin end;
+
+var
+  StopWatch: TStopwatch;
+  i: Integer;
+  v: TMyType;
+begin
+  //v:= 1;
+  //v:= 'hi';
+  //v:= TObject.Create;
+  SetLength(v, 1);
+  v[0] := 1;
+
+  //ConstTest
+  StopWatch := TStopWatch.StartNew;
+  for i := 1 to 100000000 do
+    ConstTest(v);
+  StopWatch.Stop;
+  Writeln('Const: ', StopWatch.ElapsedMilliseconds);
+
+  //VarTest
+  StopWatch := TStopWatch.StartNew;
+  for i := 1 to 100000000 do
+    VarTest(v);
+  StopWatch.Stop;
+  Writeln('Var: ',StopWatch.ElapsedMilliseconds);
+
+  //OutTest
+  StopWatch := TStopWatch.StartNew;
+  for i := 1 to 100000000 do
+    OutTest(v);
+  StopWatch.Stop;
+  Writeln('Out: ',StopWatch.ElapsedMilliseconds);
+
+  //CopyTest
+  StopWatch := TStopWatch.StartNew;
+  for i := 1 to 100000000 do
+    CopyTest(v);
+  StopWatch.Stop;
+  Writeln('Copy: ',StopWatch.ElapsedMilliseconds);
+
+  Readln;
+end.
